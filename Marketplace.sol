@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
  * @notice Simple NFT marketplace where ONLY the game owner can list NFTs for sale
  * @dev Players can buy NFTs listed by the owner, payment goes to treasury
  */
-contract GameNFTShop is Ownable, ReentrancyGuard, Pausable {
+contract PackRippr is Ownable, ReentrancyGuard, Pausable {
     
     // ============ State Variables ============
     
