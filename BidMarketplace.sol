@@ -7,18 +7,18 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title GameMarketplace
+ * @title PackripprMarketplace
  * @notice Simple marketplace for in-game NFT trading with offers support
  * @dev Supports both instant buy listings and offers (bids)
  */
-contract GameMarketplace is ReentrancyGuard, Ownable {
+contract PackripprMarketplace is ReentrancyGuard, Ownable {
     // ============ Structs ============
 
     struct Listing {
         address seller;
         address nftContract;
         uint256 tokenId;
-        address paymentToken; // address(0) for native token (ETH/MATIC)
+        address paymentToken; // address(0) for native token (ETH)
         uint256 price;
         bool active;
     }
@@ -299,7 +299,7 @@ contract GameMarketplace is ReentrancyGuard, Ownable {
 
         // Transfer payment
         if (listing.paymentToken == address(0)) {
-            // Native token (ETH/MATIC)
+            // Native token (ETH)
             require(msg.value >= price, "Insufficient payment");
 
             // Send to seller

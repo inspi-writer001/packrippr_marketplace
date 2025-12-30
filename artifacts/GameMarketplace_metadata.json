@@ -378,6 +378,34 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address[]",
+						"name": "nftContracts",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "tokenIds",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "address[]",
+						"name": "paymentTokens",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "prices",
+						"type": "uint256[]"
+					}
+				],
+				"name": "batchListNFTs",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "listingId",
 						"type": "uint256"
@@ -1057,6 +1085,9 @@
 				"acceptOffer(uint256)": {
 					"notice": "Accept an offer (seller accepts buyer's offer)"
 				},
+				"batchListNFTs(address[],uint256[],address[],uint256[])": {
+					"notice": "Admin function to list multiple items (e.g., after a new pack drop)"
+				},
 				"buyListing(uint256)": {
 					"notice": "Buy a listed NFT"
 				},
@@ -1166,11 +1197,11 @@
 			]
 		},
 		"BidMarketplace.sol": {
-			"keccak256": "0xbca56b20fbe2bbfa0c4fe9a0d08219776817fe2dbc9bbbad91e8c1302bb61961",
+			"keccak256": "0x896fe564cca3dedef0a586ba960389c60a93e564b5207f9800e0128b70bffb8a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://531e55bfa997c04c99e276746a449eb10912b220afcad50d24682f5affd07d39",
-				"dweb:/ipfs/QmTWf1Z5inyhLW8rFWNrubuJFkxSNouumCwUz98NqZkYDJ"
+				"bzz-raw://455d7a1343dc76c75f310cc03a75f848178471b61aebd5c879043a1fc015eff5",
+				"dweb:/ipfs/QmenHrmT2sYGF1PyrXo6TPR1yt5zp1KXkgjo9ZVyfMR71j"
 			]
 		}
 	},
