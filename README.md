@@ -1,57 +1,53 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
+# PackripprMarketplace
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+PackripprMarketplace is a specialized smart contract designed for the management and trading of in-game NFT assets. It facilitates primary sales via admin listings and secondary market engagement through user-generated offers.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+## Core Features
 
-## Project Overview
+- **Admin-Controlled Listings**: Only the contract owner can create, update, or cancel listings based on Requirement.
+- **Batch Operations**: Supports the simultaneous listing of multiple NFTs to optimize gas efficiency during collection drops.
+- **Flexible Payments**: Supports transactions in native currency (ETH) and authorized ERC20 tokens (USDC, ..).
+- **Offer System**: Enables users to place time-bound bids on any NFT using ERC20 tokens.
 
-This example project includes:
+## Contract Methods
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+### Listing Management
 
-## Usage
+| Method               | Description                                              |
+| -------------------- | -------------------------------------------------------- |
+| `createListing`      | Creates a single fixed-price listing for a specific NFT. |
+| `batchListNFTs`      | Creates multiple listings in a single transaction.       |
+| `updateListingPrice` | Modifies the price of an existing active listing.        |
+| `cancelListing`      | Removes an active listing from the marketplace.          |
 
-### Running Tests
+### Trading (Public)
 
-To run all the tests in the project, execute the following command:
+| Method        | Description                                                           |
+| ------------- | --------------------------------------------------------------------- |
+| `buyListing`  | Executes an immediate purchase of a listed NFT.                       |
+| `createOffer` | Allows a user to bid on an NFT with a specified expiration time.      |
+| `cancelOffer` | Permits the offer creator to retract their bid before it is accepted. |
+| `acceptOffer` | Allows the NFT owner to accept a buyer's offer, triggering the swap.  |
 
-```shell
-npx hardhat test
-```
+### Configuration
 
-You can also selectively run the Solidity or `mocha` tests:
+| Method                   | Description                                                      |
+| ------------------------ | ---------------------------------------------------------------- |
+| `setFeePercent`          | Updates the marketplace transaction fee (max 10%).               |
+| `setFeeRecipient`        | Designates the address that receives collected marketplace fees. |
+| `setAllowedPaymentToken` | Manages the list of tokens accepted for trades and offers.       |
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
-```
+## Technical Details
 
-### Make a deployment to Sepolia
+### Security
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+The contract utilizes OpenZeppelin's `ReentrancyGuard` to prevent reentrancy attacks and `Ownable` for secure access control. High-value state changes are emitted via events for off-chain indexing.
 
-To run the deployment to a local chain:
+### Fees
 
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
+Marketplace fees are calculated using basis points (e.g., 250 bps = 2.5%). Fees are automatically deducted from the sale price and routed to the fee recipient during successful trades.
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+### Integrations
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+- **ERC721**: The contract interacts with standard NFT implementations.
+- **ERC20**: Used for both payments and the escrow-less offer system.
