@@ -1,1 +1,35 @@
-.deps
+# Dependency directories
+node_modules/
+
+# Hardhat build artifacts
+artifacts/
+cache/
+
+# TypeChain generated types
+# Note: Based on your tree, these are in 'types/ethers-contracts'
+# and 'typechain-types' (if generated elsewhere)
+typechain-types/
+types/ethers-contracts/
+
+# Environment variables (Sensitive Data)
+.env
+.env.*
+
+# Hardhat Ignition 
+# It is recommended to ignore local chain deployments
+ignition/deployments/chain-31337/
+
+# Ignition Journal & Execution files (unless you specifically want to track them)
+# ignition/deployments/*/journal.jsonl
+
+# Testing coverage reports
+coverage/
+coverage.json
+
+# Build Info & Metadata (Often found in your root based on your tree)
+*_metadata.json
+build-info/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
