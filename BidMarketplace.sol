@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title PackripprMarketplace
- * @notice Simple marketplace for in-game NFT trading with offers support
+ * @notice marketplace for in-game NFT trading with offers support
  * @dev Supports both instant buy listings and offers (bids)
  */
 contract PackripprMarketplace is ReentrancyGuard, Ownable {
@@ -52,6 +52,9 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
 
     // Fee recipient
     address public feeRecipient;
+
+    // ============ New State Variables ============
+    bool public publicListingEnabled;
 
     // Allowed payment tokens (address(0) = native token)
     mapping(address => bool) public allowedPaymentTokens;
@@ -101,6 +104,9 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
         uint256 price
     );
 
+    // ============ New Events ============
+    event PublicListingToggled(bool enabled);
+
     event FeePercentUpdated(uint256 newFeePercent);
     event FeeRecipientUpdated(address newFeeRecipient);
     event PaymentTokenUpdated(address token, bool allowed);
@@ -118,6 +124,29 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
         allowedPaymentTokens[address(0)] = true;
     }
 
+    // ============ New Modifier ============
+    /**
+     * @dev Reverts if the public listing is disabled and the caller is not the owner.
+     * This allows the admin to seed the shop even when public trading is closed.
+     */
+    modifier whenListingEnabled() {
+        require(
+            publicListingEnabled || msg.sender == owner(),
+            "Marketplace: Public listing is disabled"
+        );
+        _;
+    }
+
+    // ============ Admin Toggle ============
+    /**
+     * @notice Toggles the ability for non-owners to list assets
+     * @param _enabled True to allow public listings, false for admin-only
+     */
+    function togglePublicListing(bool _enabled) external onlyOwner {
+        publicListingEnabled = _enabled;
+        emit PublicListingToggled(_enabled);
+    }
+
     // ============ Listing Functions ============
 
     /**
@@ -132,7 +161,7 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
         uint256 tokenId,
         address paymentToken,
         uint256 price
-    ) external nonReentrant onlyOwner returns (uint256) {
+    ) external nonReentrant whenListingEnabled returns (uint256) {
         require(price > 0, "Price must be > 0");
         require(
             allowedPaymentTokens[paymentToken],
@@ -182,7 +211,7 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
         uint256[] calldata tokenIds,
         address[] calldata paymentTokens,
         uint256[] calldata prices
-    ) external onlyOwner nonReentrant {
+    ) external whenListingEnabled nonReentrant {
         uint256 length = nftContracts.length;
         require(length > 0, "Empty arrays");
         require(
@@ -247,7 +276,7 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
      * @notice Cancel a listing
      * @param listingId ID of the listing to cancel
      */
-    function cancelListing(uint256 listingId) external nonReentrant onlyOwner {
+    function cancelListing(uint256 listingId) external nonReentrant {
         Listing storage listing = listings[listingId];
         require(listing.active, "Listing not active");
         require(listing.seller == msg.sender, "Not seller");
@@ -266,7 +295,7 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
     function updateListingPrice(
         uint256 listingId,
         uint256 newPrice
-    ) external nonReentrant onlyOwner {
+    ) external nonReentrant  {
         Listing storage listing = listings[listingId];
         require(listing.active, "Listing not active");
         require(listing.seller == msg.sender, "Not seller");
@@ -453,7 +482,7 @@ contract PackripprMarketplace is ReentrancyGuard, Ownable {
                 address(this)
             ) ||
                 IERC721(offer.nftContract).getApproved(offer.tokenId) ==
-                address(this),
+                    address(this),
             "Marketplace not approved"
         );
 

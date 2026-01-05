@@ -291,6 +291,19 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "PublicListingToggled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "uint256",
 						"name": "listingId",
@@ -864,6 +877,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "publicListingEnabled",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "renounceOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -909,6 +935,19 @@
 					}
 				],
 				"name": "setFeeRecipient",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "_enabled",
+						"type": "bool"
+					}
+				],
+				"name": "togglePublicListing",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -1066,6 +1105,11 @@
 						"newFeeRecipient": "New fee recipient"
 					}
 				},
+				"togglePublicListing(bool)": {
+					"params": {
+						"_enabled": "True to allow public listings, false for admin-only"
+					}
+				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
 				},
@@ -1124,11 +1168,14 @@
 				"setFeeRecipient(address)": {
 					"notice": "Update fee recipient address"
 				},
+				"togglePublicListing(bool)": {
+					"notice": "Toggles the ability for non-owners to list assets"
+				},
 				"updateListingPrice(uint256,uint256)": {
 					"notice": "Update listing price"
 				}
 			},
-			"notice": "Simple marketplace for in-game NFT trading with offers support",
+			"notice": "marketplace for in-game NFT trading with offers support",
 			"version": 1
 		}
 	},
@@ -1142,7 +1189,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -1197,11 +1244,11 @@
 			]
 		},
 		"BidMarketplace.sol": {
-			"keccak256": "0x7b395398934f95650b2823f49ed83e0cb3eb1ae622cb666e308479d0346449d0",
+			"keccak256": "0xa627a806105b2dc95a62ba5fed55a01b31770c4337962b0461e0a593b2786a51",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5c0465f38f8bfdf8618cdc9e50303701476660e5e0f0f0e163784108dfb3660e",
-				"dweb:/ipfs/QmdefDknxfUVeRqm7yeYEJuy8dZxVReXBcgnErV9p4kVmH"
+				"bzz-raw://f6dbe343b1a927b2626338c163d1053678620fb5f29aaaa7b95687420c89f377",
+				"dweb:/ipfs/QmerUJ7zR5tUiJ4uG2ka5CRjmLjcV9dUkDV3Jttttyqzji"
 			]
 		}
 	},
